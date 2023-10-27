@@ -1,2 +1,2 @@
-# Mentor
- class base
+# django
+ this is for training
