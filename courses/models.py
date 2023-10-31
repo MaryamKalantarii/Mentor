@@ -32,7 +32,7 @@ class Trainer(models.Model):
     updated_datetime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.info.username
+        return self.info.email
     
     
 

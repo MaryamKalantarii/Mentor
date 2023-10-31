@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block 'title' %}Home{% endblock 'title' %}
 {% block 'content' %}
 
@@ -44,35 +45,7 @@
     </section><!-- End About Section -->
 
     <!-- ======= Counts Section ======= -->
-    <section id="counts" class="counts section-bg">
-      <div class="container">
-
-        <div class="row counters">
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{uc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Students</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{cc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Courses</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{sc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Services</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{tc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Trainers</p>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Counts Section -->
+  {% counter %}
 
     <!-- ======= Why Us Section ======= -->
     <section id="why-us" class="why-us">
@@ -94,6 +67,7 @@
           <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-boxes d-flex flex-column justify-content-center">
               <div class="row">
+                {% service as service %}
                 {% for service in service %}
                 <div class="col-xl-4 d-flex align-items-stretch">
                   <div class="icon-box mt-4 mt-xl-0">
@@ -121,6 +95,7 @@
         </div>
 
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% last_three_course 5 as course %}
         {% for cr in course %}
 
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
@@ -134,13 +109,13 @@
                   <p class="price">${{cr.price}}</p>
                 </div>
                 {% for sk in cr.teacher.skills.all  %}
-                <h3><a href="{% url 'courses:course_detail' id=cr.id %}">{{sk.name}}</a></h3>
+                <h3><a href="course-details.html">{{sk.name}}</a></h3>
                 {% endfor %}
                 <p>{{cr.teacher.description}}</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src={{cr.teacher.image.url}} class="img-fluid" alt="">
-                    <span>{{cr.teacher.info.username}}</span>
+                    <span>{{cr.teacher.info.email}}</span>
                   </div>
                   <div class="trainer-rank d-flex align-items-center">
                     <i class="bx bx-user"></i>&nbsp;{{cr.counted_views}}
@@ -164,14 +139,15 @@
        
 
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% last_three_trainer as trainer %}
           {% for tr in trainer  %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
             <div class="member">
               <img src={{tr.image.url}} class="img-fluid" alt="">
               <div class="member-content">
-                <h4>{{tr.info.username}}</h4>
+                <h4>{{tr.info.email}}</h4>
                 {% for sk in tr.skills.all %}
-                <span>{{sk.name}}</span>
+                <span>{{sk.email}}</span>
                 {% endfor %}
                 <p>
                  {{tr.description}}

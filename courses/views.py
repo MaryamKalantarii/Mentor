@@ -1,61 +1,60 @@
-
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404,redirect
-from .models import Course,Comment,Reply
-from courses.models import Category
+from .models import Course,Comment,Reply,Category
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from .forms import CommentForm, ReplyForm
 from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
+from django.views.generic import ListView , DetailView
 
 
 
-
-def courses(request ,cat = None,teacher = None):
-    if request.method == 'GET':
-        category = Category.objects.all()
-        if cat:
-            course = Course.objects.filter(category__name=cat)
-        elif teacher:
-            course = Course.objects.filter(teacher__info__username = teacher)
-        elif request.GET.get('search'):
-            course = Course.objects.filter(content__contains=request.GET.get('search'))
-        else:
-            course = Course.objects.filter(status=True)
+# def courses(request ,cat = None,teacher = None):
+#     if request.method == 'GET':
+       
+#         if cat:
+#             course = Course.objects.filter(category__name=cat)
+#         elif teacher:
+#             course = Course.objects.filter(teacher__info__username = teacher)
+#         elif request.GET.get('search'):
+#             course = Course.objects.filter(content__contains=request.GET.get('search'))
+#         else:
+#             course = Course.objects.filter(status=True)
 
         
-        course = Paginator(course,2)
-        first_page = 1
-        last_page = course.num_pages
-        try:
-            page_number = request.GET.get('page')
-            course = course.get_page(page_number)
-        except EmptyPage:
-            course = course.get_page(1)
-        except PageNotAnInteger:
-            course = course.get_page(1)
+#         course = Paginator(course,2)
+#         first_page = 1
+#         last_page = course.num_pages
+#         try:
+#             page_number = request.GET.get('page')
+#             course = course.get_page(page_number)
+#         except EmptyPage:
+#             course = course.get_page(1)
+#         except PageNotAnInteger:
+#             course = course.get_page(1)
 
-        context ={
-            "courses": course,
-            'category':category,
-            'first_page': first_page,
-            'last_page': last_page,
+#         context ={
+#             "courses": course,
+#             'first_page': first_page,
+#             'last_page': last_page,
             
-        }
-        return render(request,'course/courses.html',context=context)
-    elif request.method == 'POST':
-        form = NewsLetterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request,messages.SUCCESS,'your email submited successfully')
-            return redirect('courses:courses')
-        else :
-            messages.add_message(request,messages.ERROR,'Invalid email address')
-            return redirect('courses:courses')
+#         }
+#         return render(request,'course/courses.html',context=context)
+#     elif request.method == 'POST':
+#         form = NewsLetterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.add_message(request,messages.SUCCESS,'your email submited successfully')
+#             return redirect('courses:courses')
+#         else :
+#             messages.add_message(request,messages.ERROR,'Invalid email address')
+#             return redirect('courses:courses')
 
 def course_detail(request, id):
     if request.method == 'GET':
-        category = Category.objects.all()
+        
         try:
             course = Course.objects.get(id=id)
             comments = Comment.objects.filter(which_course=id, status=True)
@@ -86,7 +85,7 @@ def course_detail(request, id):
                       'next_course': next_course,
                       'previous_course': previous_course,
                       'comments': comments,
-                      'category' : category,
+                      
                       'reply' : reply,
             }
             return render(request,'course/course-details.html',context=context)
@@ -164,3 +163,19 @@ def reply(request, id):
         else:
             messages.add_message(request,messages.ERROR,'chete baba ba in data dadanet .... zereshk')
             return redirect (request.path_info)
+        
+
+class CourseListView(ListView):
+    template_name = 'course/courses.html'
+    context_object_name ='courses'
+
+    def get_queryset(self):
+        if self.kwargs.get('cat'):
+            return Course.objects.filter(category__name=self.kwargs('cat'))
+        elif self.kwargs.get('teacher'):
+            return Course.objects.filter(teacher__name=self.kwargs('teacher'))
+        elif self.request.GET.get('search'):
+            return Course.objects.filter(content__contains=self.request.GET.get('search'))
+        else:
+            return Course.objects.filter(status=True)
+        
