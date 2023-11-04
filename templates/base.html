@@ -66,8 +66,7 @@
             <li><a href="{% url 'courses:courses' %}">Courses</a></li>
             <li><a href="{% url 'root:trainer' %}">Trainers</a></li>
             <li><a href="{% url 'root:contact' %}">Contact</a></li>
-            <li><a href={% url 'courses:cart' %}>Submit and pay {{ cart|length}}</a></li>
-            <!-- <li><a href="#" style="color: rgb(86, 214, 97); font-size: 20px;">{{request.session.cart|length}}<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 30px;"></i></a></li> -->
+            <li><a href={% url 'courses:cart' %} style="color: rgb(86, 214, 97); font-size: 20px;">{{cart|length}}<i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 30px;"></i></a></li>
             <li class="dropdown"><a href="#"><span>Category</span> <i class="bi bi-chevron-down"></i></a>
               <ul>
                 {% category as category%}
