@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block 'title' %}course-details{% endblock 'title' %}
+{% block 'title' %}course{% endblock 'title' %}
 {% block 'content' %}
 
 
-    <main id="main">
+  <main pk="main">
 
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs" data-aos="fade-in">
@@ -15,7 +15,7 @@
     </div><!-- End Breadcrumbs -->
 
     <!-- ======= Cource Details Section ======= -->
-    <section id="course-details" class="course-details">
+    <section pk="course-details" class="course-details">
       <div class="container" data-aos="fade-up">
 
         <div class="row">
@@ -30,14 +30,14 @@
                 {% if next_course and previous_course %}
                 <div class="col-lg-5 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                   <div class="thumb">
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
                   </div>
                   <div class="arrow">
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
                   </div>
                   <div class="detials">
                     <p>Prev Course</p>
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}>
                       <h4>{{previous_course.title}}</h4>
                     </a>
                   </div>
@@ -45,43 +45,43 @@
                 <div class="col-lg-5 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                   <div class="detials">
                     <p>Next Post</p>
-                    <a href={% url 'courses:course_detail' id=next_course.id %}>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}>
                       <h4>{{next_course.title}}</h4>
                     </a>
                   </div>
                   <div class="arrow">
-                    <a href={% url 'courses:course_detail' id=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
                   </div>
                   <div class="thumb">
-                    <a href={% url 'courses:course_detail' id=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
                   </div>
                 </div>
                 {% elif next_course %}
                 <div class="col-lg-5 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                   <div class="detials">
                     <p>Next Post</p>
-                    <a href={% url 'courses:course_detail' id=next_course.id %}>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}>
                       <h4>{{next_course.title}}</h4>
                     </a>
                   </div>
                   <div class="arrow">
-                    <a href={% url 'courses:course_detail' id=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
                   </div>
                   <div class="thumb">
-                    <a href={% url 'courses:course_detail' id=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
+                    <a href={% url 'courses:course_detail' pk=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
                   </div>
                 </div>
-                {% else %}
+                {% elif previous_course %}
                 <div class="col-lg-5 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                   <div class="thumb">
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
                   </div>
                   <div class="arrow">
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
                   </div>
                   <div class="detials">
                     <p>Prev Course</p>
-                    <a href={% url 'courses:course_detail' id=previous_course.id %}>
+                    <a href={% url 'courses:course_detail' pk=previous_course.id %}> 
                       <h4>{{previous_course.title}}</h4>
                     </a>
                   </div>
@@ -91,7 +91,7 @@
             </div><br>
             <div class="comments-area">
               <h4>{{comments.count}} Comments</h4>
-            {% for comment in comments %}
+              {% for comment in comments %}
               <div class="comment-list">
                 <div class="single-comment justify-content-between d-flex">
                   <div class="user justify-content-between d-flex">
@@ -102,15 +102,19 @@
                       <h5><a href="#">{{comment.name}}</a></h5>
                       <p class="date">{{comment.created_date|date:"d M Y"}}</p>
                       <p class="comment">
-                      {{comment.message}}
+                        {{comment.message}}
                       </p>
-                      <a type='button' href={% url 'courses:delete' id=comment.id %}>Delete</a>
-                      <a type='button' href={% url 'courses:edit' id=comment.id %}>Edit</a>
+                      {% if request.user.is_authenticated and request.user.username == comment.name %}
+                      <a type='button' href={% url 'courses:delete' pk=comment.id %}>Delete</a>
+                      <a type='button' href={% url 'courses:edit' pk=comment.id %}>Edit</a>
+                      {% endif %}
                     </div> 
 
                   </div>
                   <div class="reply-btn">
-                    <p><a href={% url 'courses:reply' id=comment.id %} class="btn-reply text-uppercase">reply</a></p>
+                    {% if request.user.is_authenticated %}
+                    <p><a href={% url 'courses:reply' pk=comment.id %} class="btn-reply text-uppercase">reply</a></p>
+                    {% endif %}
                     {% for rp in reply %}
                       {% if rp.which_comment.id == comment.id %}
                           <p>{{rp.name}}:{{rp.message}}</p>
@@ -128,29 +132,7 @@
                   {{message}}
                 {% endfor %}
               {% endif %}
-              <form method='post'>
-                {% csrf_token %}
-                <div class="form-group form-inline">
-                  <div class="form-group col-lg-6 col-md-12 name">
-                    <input type='hidden' name='which_course' value={{course.id}}>
-                    <input type="text" class="form-control" name="name" placeholder="Enter Name"
-                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
-                  </div>
-                  <div class="form-group col-lg-6 col-md-12 email">
-                    <input type="email" class="form-control" name="email" placeholder="Enter email address"
-                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject"
-                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
-                </div>
-                <div class="form-group">
-                  <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
-                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
-                </div>
-                <button type='submit' class="primary-btn text-uppercase">Post Comment</button>
-              </form>
+
             </div>
           </div>
           <div class="col-lg-4">
@@ -173,6 +155,18 @@
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Schedule</h5>
               <p>{{course.schedule|date:"D d M Y----H:i A"}}</p>
+            </div>
+            <div class="course-info d-flex justify-content-between align-items-center">
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{course.id}}"> 
+                <button type="submit">Add To Cart</button>
+              </form>
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{course.id}}"> 
+                <button type="submit">Delete From Cart</button>
+              </form>
             </div>
 
           </div>

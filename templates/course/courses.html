@@ -5,7 +5,7 @@
 {% block 'content' %}
 
 
-  <main id="main" data-aos="fade-in">
+  <main pk="main" data-aos="fade-in">
 
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- ======= Courses Section ======= -->
-    <section id="courses" class="courses">
+    <section pk="courses" class="courses">
       <div class="container" data-aos="fade-up">
 
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
@@ -38,8 +38,13 @@
                   {% endfor %}
                   <p class="price">${{cr.price}}</p>
                 </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="pk" value="{{cr.id}}"> 
+                  <button type="submit">Add To Cart</button>
+                </form>
 
-                <h3><a href="{% url 'courses:course_detail' id=cr.id %}">{{cr.capt}}</a></h3>
+                <h3><a href="{% url 'courses:course_detail' pk=cr.id %}">{{cr.capt}}</a></h3>
                 <p>{{cr.content|truncatechars:10}}</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
@@ -70,23 +75,22 @@
             font-size:60px;
         }
     </style>
-      
-      {% if courses.has_next and courses.has_previous %}
-      <a href="?page={{first_page}}"><<</a>
-      <a href="#">{{courses.previous_page_number}}</a>
-      <a href="?page={{courses.previous_page_number}}"><  </a>
-      <a href="#" class="dimmed">{{courses.number}}</a>
-      <a href="?page={{courses.next_page_number}}">></a>
-      <a href="#">{{courses.next_page_number}}</a>
-      <a href="?page={{last_page}}">>></a>
-      {% elif courses.has_next %}
-      <a href="?page={{courses.next_page_number}}">></a>
-      <a href="#">{{courses.next_page_number}}</a>
-      <a href="?page={{last_page}}">>></a>
-      {% elif courses.has_previous %}
-      <a href="?page={{first_page}}"><<</a>
-      <a href="#">{{courses.previous_page_number}}</a>
-      <a href="?page={{courses.previous_page_number}}"><  </a>
+      {% if page_obj.has_next and page_obj.has_previous %}
+      <a href="?page=1"><<</a>
+      <a href="#">{{page_obj.previous_page_number}}</a>
+      <a href="?page={{page_obj.previous_page_number}}"><  </a>
+      <a href="#" class="dimmed">{{page_obj.number}}</a>
+      <a href="?page={{page_obj.next_page_number}}">></a>
+      <a href="#">{{page_obj.next_page_number}}</a>
+      <a href="?page={{page_obj.paginator.num_pages}}">>></a>
+      {% elif page_obj.has_next %}
+      <a href="?page={{page_obj.next_page_number}}">></a>
+      <a href="#">{{page_obj.paginator.num_pages}}</a>
+      <a href="?page={{page_obj.paginator.num_pages}}">>></a>
+      {% elif page_obj.has_previous %}
+      <a href="?page=1"><<</a>
+      <a href="#">{{page_obj.previous_page_number}}</a>
+      <a href="?page={{page_obj.previous_page_number}}"><  </a>
       {% endif %}
       
       
