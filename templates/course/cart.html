@@ -2,20 +2,75 @@
 {% block 'title' %}payment{% endblock 'title' %}
 {% block 'content' %}
 <br><br><br><br><br><br><br><br><br>
+    <style>
+        .back{
+            border: 2px solid rgb(72, 136, 62);
+            width: 50%;
+            height: 50%;
+           margin: 50px auto;
+           border-radius: 20px;
+           text-align: center;
+           position: relative;
+           background-color: bisque;
+        }
+       .back p{
+           display: inline-flex;
+        }
+        p img{
+           
+            border-radius: 20px;
+            width: 50%;
+            height:50%;
+           margin:20px ; 
+        }
+        .p{
+          position: absolute;
+           left: 60%;
+           top: 40%;
+           font-size: 30px;
+           font-family: Arial, Helvetica, sans-serif;
+        }
+        .p2{
+            position: absolute;
+           left: 70%;
+           top: 40%;
+           font-size: 30px;
+           font-family: Arial, Helvetica, sans-serif;
 
+        }
+        .c{
+            border: 2px solid rgb(72, 136, 62);
+            width: 50%;
+            height:200px;
+           margin: 40px auto;
+           border-radius: 20px;
+           text-align: center;
+           position: relative;
+           background-color: bisque;
+           font-size: 40px ;
+        }
+      .c a:hover{
+        color: black;
+      }
+    </style>
 {% for  product in cart %}
+    <div class="back">
+    <p class="p" >{{product.product_object.title}} :</p>
+    <p class="p2">{{ product.product_object.price }}$</p>
+    <p><img  src={{ product.product_object.image.url }}></p>
 
-    <h5><p style="margin: 20px;">{{product.product_object.title}}</p></h5>
-    <h5><p style="margin: 20px;">{{ product.product_object.price }}$</p></h5>
-    <h5><p><img style="width: 100px;height: 100px;margin: 20px;" src={{ product.product_object.image.url }}></p></h5> 
-  
+</div>
 
 {% endfor %}
-<h5><p>--------------------</p></h5>
-<a href="#"> payment and go to paymen site {{ cart.get_total_price_one_quantity }}</a>
-{% endblock 'content' %}
 
-
+<div  class="c">
+    <p>Number of products: {{cart|length}}</p>
+    <a href="#"> payment and go to paymen site: {{ cart.get_total_price_one_quantity }}$</a>
+       
+    
+</div>
+<br><br>
+{% endblock 'content' %} 
 
 
 
