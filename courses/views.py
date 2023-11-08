@@ -80,8 +80,7 @@ class CourseDetailView(DetailView):
             
         else:
             product = get_object_or_404(Course, id=request.POST['pk'])
-            quantity = request.POST.get('quantity',1)
-            cart.add_to_cart_some_quantity(product,quantity)
+            cart.add_to_cart_one_quatity(product)
         return redirect(request.path_info)
 
     

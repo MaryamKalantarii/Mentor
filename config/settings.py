@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'courses',
     'accounts',
     'robots',
+    'order',
 ]
 
 SITE_ID = 1

@@ -66,9 +66,11 @@
 <div  class="c">
     <p>Number of products: {{cart|length}}</p>
     <a href="#"> payment and go to paymen site: {{ cart.get_total_price_one_quantity }}$</a>
+    <br>
+    <a href={% url "order:order" %} class="btn btn-primary">Submit Payment</a>
        
-    
 </div>
+
 <br><br>
 {% endblock 'content' %} 
 
